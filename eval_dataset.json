@@ -1,9 +1,5 @@
 [
   {
-    "question": "Replace this with a real question about one of your PDFs",
-    "expected_source": "the_exact_filename.pdf"
-  },
-  {
     "question": "What is CRC?",
     "expected_source": "networking_notes.pdf"
   }
