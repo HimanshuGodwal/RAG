@@ -61,12 +61,10 @@ uvicorn api:app --reload --port 8000
 
 Open `index.html` in a browser and ask a question.
 
-## Limitations / next steps
-
-- Answers don't yet show *which* document or page they were retrieved from — the pipeline has this metadata, the frontend doesn't surface it yet
-- No conversation memory — each question is independent
-- No retrieval evaluation shown in the UI, though a hit-rate check exists in the pipeline
-- Single-user, local setup — no auth or deployment layer
+## Next steps
+ 
+- Surface *which* document/page each answer was retrieved from — the pipeline already has this metadata, the frontend doesn't render it yet
+- Show the retrieval hit-rate eval (already written) in the UI, so grounding is measurable, not just claimed
 
 ## Why I built this
 
