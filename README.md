@@ -1,144 +1,73 @@
-# 📚 Retrieval-Augmented Generation (RAG) Pipeline
+# Archive AI — RAG Document Q&A
 
-A beginner-friendly implementation of a Retrieval-Augmented Generation (RAG) pipeline built while learning modern LLM application development.
+A retrieval-augmented generation (RAG) system that answers questions strictly from a set of indexed PDF documents. Includes a Python backend and a lightweight web interface.
 
-This project demonstrates the complete RAG workflow—from loading PDF documents to generating context-aware answers using semantic search and a Large Language Model.
+Answers are grounded in retrieved context only — if the answer isn't in the documents, the model says so instead of guessing. That constraint is the whole point: an LLM answering freely is not a document Q&A system, it's a chatbot that happens to have your PDFs nearby.
 
----
-
-## 🚀 Features
-
-- Load one or multiple PDF documents
-- Split documents into semantic chunks
-- Generate embeddings using Sentence Transformers
-- Store embeddings in ChromaDB
-- Perform semantic similarity search
-- Retrieve relevant document chunks
-- Generate answers using Groq's Llama 3.1 model
-
----
-
-## 🛠 Tech Stack
-
-- Python
-- LangChain
-- ChromaDB
-- Sentence Transformers
-- PyMuPDF
-- LangChain Text Splitters
-- Groq API
-- Llama 3.1
-- Jupyter Notebook
-
----
-
-## 📂 Pipeline
+## How it works
 
 ```
-PDF Documents
-      │
-      ▼
-Document Loader
-      │
-      ▼
-Text Splitter
-      │
-      ▼
-Sentence Embeddings
-      │
-      ▼
-ChromaDB Vector Store
-      │
-      ▼
-Similarity Search
-      │
-      ▼
-Retrieved Context
-      │
-      ▼
-Llama 3.1 (Groq)
-      │
-      ▼
-Final Answer
+PDFs → chunking → embeddings → ChromaDB (vector store)
+                                     ↓
+question → similarity search → top-k chunks → LLM → answer
 ```
 
----
+1. PDFs are loaded and split into overlapping chunks (LangChain)
+2. Each chunk is embedded (Sentence-Transformers) and stored in ChromaDB
+3. A question is embedded the same way and matched against the stored chunks
+4. The most relevant chunks are passed to an LLM (Llama 3.1 8B, via Groq) along with the question
+5. The model is instructed to answer only from that context
+6. A FastAPI endpoint exposes this as `/ask`; a plain HTML/CSS/JS frontend calls it
 
-## Workflow
+## Design notes
 
-1. Load PDF documents.
-2. Split documents into manageable chunks.
-3. Generate embeddings using `all-MiniLM-L6-v2`.
-4. Store embeddings in ChromaDB.
-5. Convert the user's query into an embedding.
-6. Retrieve the most relevant chunks.
-7. Send the retrieved context to the LLM.
-8. Generate a context-aware answer.
+A few choices worth explaining rather than leaving implicit:
 
----
+- **Chunk size (1000 chars) and overlap (200 chars):** small enough to keep retrieved context focused on one idea, large enough to avoid splitting a sentence across chunks. The overlap means a fact near a chunk boundary still gets retrieved whole.
+- **Top-k = 3:** more chunks means more context but also more noise in the prompt. Three was the tradeoff point during manual testing on the sample documents.
+- **Strict grounding in the prompt:** the model is explicitly told to say it doesn't know rather than fill gaps — the harder and more important behavior to get right in any RAG system, since an ungrounded answer is worse than no answer.
 
-## Project Structure
+## Tech stack
 
-```
-RAG/
-│
-├── RAG.ipynb
-├── data/
-│   └── *.pdf
-└── README.md
-```
+**Backend:** Python, FastAPI, LangChain, ChromaDB, Sentence-Transformers, Groq API (Llama 3.1 8B)
+**Frontend:** HTML, CSS, vanilla JavaScript (`fetch`)
 
----
-
-## Example Query
+## Project structure
 
 ```
-Question:
-What is CRC?
+rag_pipeline.py   → core pipeline: load, chunk, embed, store, retrieve, generate
+api.py            → FastAPI wrapper exposing the pipeline as /ask
+index.html        → chat-style interface
+style.css         → styling, light/dark theme
+script.js         → calls the API and renders the response
+requirements.txt  → dependencies
 ```
 
-The system retrieves the most relevant document chunks before generating an answer with Llama 3.1.
+## Running it locally
 
----
+```bash
+pip install -r requirements.txt
+```
 
-## Concepts Practiced
+Create a `.env` file in the project root:
+```
+GROQ_API_KEY=your_key_here
+```
 
-- Retrieval-Augmented Generation (RAG)
-- Document Loading
-- Text Chunking
-- Vector Embeddings
-- Semantic Search
-- ChromaDB
-- Prompt Engineering
-- Context Injection
-- Large Language Models
+Add your PDFs to a `pdf_data/` folder, then start the backend:
+```bash
+uvicorn api:app --reload --port 8000
+```
 
----
+Open `index.html` in a browser and ask a question.
 
-## Future Improvements
+## Limitations / next steps
 
-- Convert notebook into a Python package
-- Build a FastAPI backend
-- Create a Streamlit web interface
-- Store vectors persistently
-- Support multiple embedding models
-- Add metadata filtering
-- Add conversation memory
-- Dockerize the application
-- Evaluate retrieval quality
-- Deploy on the cloud
+- Answers don't yet show *which* document or page they were retrieved from — the pipeline has this metadata, the frontend doesn't surface it yet
+- No conversation memory — each question is independent
+- No retrieval evaluation shown in the UI, though a hit-rate check exists in the pipeline
+- Single-user, local setup — no auth or deployment layer
 
----
+## Why I built this
 
-## Learning Objective
-
-This project was built as part of my journey to learn Retrieval-Augmented Generation (RAG) and modern LLM application development. The primary goal was to understand each stage of the RAG pipeline before moving on to larger production-ready AI applications.
-
----
-
-## Author
-
-**Himanshu Godwal**
-
-AI & Machine Learning Student  
-Interested in LLMs, RAG, Computer Vision, and AI Engineering.
+A hands-on RAG implementation to understand the full retrieval → grounding → generation flow, not just call a wrapper library. Built as part of my AI/ML portfolio.
