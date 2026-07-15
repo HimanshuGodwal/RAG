@@ -1,0 +1,324 @@
+/* colors and fonts, so I can change the whole theme from one place */
+:root {
+  --bg: #0A0C0F;
+  --panel: #12151B;
+  --panel2: #1A2029;
+  --border: #242B36;
+  --text: #E7EAEE;
+  --text-light: #838C99;
+  --accent: #F2A93B;
+  --accent-bg: rgba(242, 169, 59, 0.14);
+  --green: #4ADE80;
+
+  --mono: 'IBM Plex Mono', monospace;
+  --sans: 'IBM Plex Sans', sans-serif;
+}
+
+/* light mode just swaps these same variables */
+[data-theme="light"] {
+  --bg: #F5F6F8;
+  --panel: #FFFFFF;
+  --panel2: #ECEEF1;
+  --border: #DCE0E5;
+  --text: #171A1F;
+  --text-light: #6B7280;
+  --accent: #C67C1B;
+  --accent-bg: rgba(198, 124, 27, 0.12);
+  --green: #16A34A;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100%;
+}
+
+/* top bar with the logo and status text */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  font-family: var(--mono);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.brand span {
+  color: var(--accent);
+}
+
+.logo-icon {
+  color: var(--accent);
+  display: inline-flex;
+}
+
+.status-info {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  color: var(--text-light);
+}
+
+.status-info .divider {
+  color: var(--border);
+}
+
+/* little green dot that blinks to show the "system" is online */
+.status-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  margin-right: 6px;
+  animation: blink 2s infinite;
+}
+
+@keyframes blink {
+  0%   { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.5); }
+  70%  { box-shadow: 0 0 0 5px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* only show the status text on bigger screens, gets cramped on mobile */
+@media (min-width: 620px) {
+  .status-info {
+    display: flex;
+  }
+}
+
+/* dark/light toggle button top right */
+.theme-btn {
+  width: 30px;
+  height: 30px;
+  margin-left: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: none;
+  color: var(--text-light);
+  cursor: pointer;
+}
+
+.theme-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-bg);
+}
+
+.theme-icon {
+  display: none;
+}
+
+.moon-icon {
+  display: inline-flex;
+}
+
+[data-theme="light"] .moon-icon {
+  display: none;
+}
+
+[data-theme="light"] .sun-icon {
+  display: inline-flex;
+}
+
+/* main chat area in the middle, scrolls if it gets long */
+.chat-area {
+  flex: 1;
+  overflow-y: auto;
+  padding: 32px 20px;
+}
+
+/* shown before the user has asked anything */
+.empty-msg {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: var(--text-light);
+  padding: 0 24px;
+}
+
+.empty-icon {
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+
+.empty-msg h1 {
+  font-size: 18px;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+
+.empty-msg p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  max-width: 320px;
+  margin: 0;
+}
+
+/* the question + answer bubbles */
+.chat-log {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.msg {
+  border-radius: 10px;
+  padding: 14px 16px;
+  border: 1px solid var(--border);
+}
+
+.user-msg {
+  background: var(--panel2);
+  align-self: flex-end;
+  max-width: 85%;
+}
+
+.ai-msg {
+  background: var(--panel);
+  border-color: var(--accent-bg);
+  align-self: flex-start;
+  max-width: 100%;
+}
+
+.msg-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--mono);
+  font-size: 10.5px;
+  letter-spacing: 0.05em;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+
+/* used on "You asked" so it doesn't look as technical as the AI label */
+.soft-label {
+  font-family: var(--sans);
+  font-weight: 500;
+  font-size: 11.5px;
+}
+
+.small-icon {
+  color: var(--accent);
+}
+
+.msg-text {
+  margin: 0;
+  font-size: 14.5px;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+/* input box fixed at the bottom */
+.input-area {
+  flex-shrink: 0;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--border);
+}
+
+.input-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 680px;
+  margin: 0 auto;
+  background: var(--panel2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 6px 6px 6px 16px;
+}
+
+.input-box:focus-within {
+  border-color: var(--accent);
+}
+
+.input-box input {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  padding: 10px 0;
+}
+
+.input-box input::placeholder {
+  color: var(--text-light);
+}
+
+.send-btn {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: none;
+  background: var(--accent);
+  color: #191307;
+  cursor: pointer;
+}
+
+.send-btn:hover {
+  opacity: 0.9;
+}
+
+.send-btn:disabled {
+  background: var(--border);
+  color: var(--text-light);
+  cursor: not-allowed;
+}
+
+.hint {
+  max-width: 680px;
+  margin: 10px auto 0;
+  font-size: 11px;
+  color: var(--text-light);
+  text-align: center;
+}
+
+/* so keyboard users can see what's focused */
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .status-dot {
+    animation: none;
+  }
+}
