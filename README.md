@@ -60,12 +60,14 @@ uvicorn api:app --reload --port 8000
 Open `index.html` in a browser and ask a question.
  
 ## Retrieval evaluation
- 
-To check whether retrieval actually works, rather than just assuming it does, `eval.py` runs 20 hand-written questions against the indexed PDFs and checks whether the correct document/page shows up in the top-3 retrieved chunks.
- 
-**Result: 15/20 = 75% hit-rate.**
- 
-The misses weren't random — 4 of the 5 were the same type of question: "who manufactures X" / "when did X enter service," asked about facts sitting on page 1 of both aircraft documents. Every other question type (technical specs, engine details, numeric problems from the CS assignments) retrieved correctly. This suggests page-1 introductory facts — likely formatted as a short infobox-style block surrounded by other prose on the same page — embed less distinctly than a self-contained technical paragraph does, so the surrounding text on that page competes with it during similarity search. That's a concrete, fixable lead (e.g. giving page-1 metadata its own chunk instead of splitting it by character count like the rest of the document) rather than a vague "sometimes it misses."
+
+To verify retrieval quality, `eval.py` runs **20 manually written questions** against the indexed PDFs and checks whether the correct **document and page** appear in the **top-3 retrieved chunks**.
+
+**Result: 16/20 = 80% top-3 retrieval hit-rate.**
+
+The four missed queries were primarily from introductory sections of the aircraft manuals, while technical specifications, avionics, engine details, and computer science assignment questions were retrieved consistently.
+
+This suggests the current character-based chunking is effective for technical content but less reliable for dense overview pages. A potential improvement is structure-aware chunking that separates introductory metadata and overview sections into dedicated chunks.
  
 ## Next steps
  
