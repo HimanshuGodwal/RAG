@@ -10,17 +10,17 @@ from rag_pipeline import retrieve_documents, SHARED_SESSION
 
 test_cases = [
     {
-        "question": "Who is the manufacturer of the Dassault Rafale?",
+        "question": "What is the primary mission of the Dassault Rafale?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 1,
     },
     {
-        "question": "When did the Dassault Rafale first enter service?",
+        "question": "Which air forces currently operate the Dassault Rafale?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 1,
     },
     {
-        "question": "Which countries originally collaborated on the Future European Fighter Aircraft project?",
+        "question": "What countries originally collaborated on the Future European Fighter Aircraft project?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 1,
     },
@@ -30,7 +30,7 @@ test_cases = [
         "expected_page": 1,
     },
     {
-        "question": "What engines power the Dassault Rafale?",
+        "question": "Which engines power the Dassault Rafale?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 6,
     },
@@ -40,22 +40,22 @@ test_cases = [
         "expected_page": 6,
     },
     {
-        "question": "What avionics architecture is used in the Rafale?",
+        "question": "Which avionics architecture is integrated into the Rafale?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 5,
     },
     {
-        "question": "What defensive electronic warfare system protects the Rafale?",
+        "question": "What electronic warfare system provides self-protection for the Rafale?",
         "expected_source": "Dassault_Rafale.pdf",
         "expected_page": 5,
     },
     {
-        "question": "Who manufactures the Dassault Mirage 2000?",
+        "question": "What type of aircraft is the Dassault Mirage 2000?",
         "expected_source": "Dassault_Mirage_2000.pdf",
         "expected_page": 1,
     },
     {
-        "question": "When did the Dassault Mirage 2000 first fly?",
+        "question": "Which air forces are listed as the primary operators of the Mirage 2000?",
         "expected_source": "Dassault_Mirage_2000.pdf",
         "expected_page": 1,
     },
@@ -65,12 +65,12 @@ test_cases = [
         "expected_page": 1,
     },
     {
-        "question": "What engine powers the Mirage 2000?",
+        "question": "Which engine powers the Mirage 2000 fighter aircraft?",
         "expected_source": "Dassault_Mirage_2000.pdf",
         "expected_page": 6,
     },
     {
-        "question": "What is the primary role of the Mirage 2000N variant?",
+        "question": "What is the purpose of the Mirage 2000N variant?",
         "expected_source": "Dassault_Mirage_2000.pdf",
         "expected_page": 3,
     },
@@ -80,32 +80,32 @@ test_cases = [
         "expected_page": 5,
     },
     {
-        "question": "What bandwidth is given in the Nyquist and Shannon theorem problem?",
+        "question": "According to the networking assignment, what is the bandwidth of the communication channel in Question 1?",
         "expected_source": "AssignmentCN.pdf",
         "expected_page": 1,
     },
     {
-        "question": "What is the propagation speed used in the multi-segment end-to-end delay problem?",
+        "question": "What propagation speed is specified for the multi-hop transmission problem?",
         "expected_source": "AssignmentCN.pdf",
         "expected_page": 1,
     },
     {
-        "question": "What is the generator polynomial used in the CRC division problem?",
+        "question": "Which generator polynomial is used in the CRC division problem?",
         "expected_source": "AssignmentCN.pdf",
         "expected_page": 2,
     },
     {
-        "question": "Which collision resolution technique is specified in the hashing question?",
+        "question": "Which collision resolution method is required in the hashing problem?",
         "expected_source": "AssignmentADS.pdf",
         "expected_page": 1,
     },
     {
-        "question": "Which sequence of numbers is used to construct the Red-Black Tree?",
+        "question": "What sequence of values is used to construct the Red-Black Tree?",
         "expected_source": "AssignmentADS.pdf",
         "expected_page": 1,
     },
     {
-        "question": "Which keys must be deleted from the perfect skip list?",
+        "question": "Which elements are removed from the perfect skip list after construction?",
         "expected_source": "AssignmentADS.pdf",
         "expected_page": 1,
     },
